@@ -72,7 +72,9 @@ const UserSearchPage = () => {
       setUsers([]);
       setTotalUsers(0);
     }
-    sessionStorage.setItem("search", searchString);
+    if (searchString !== null) {
+      sessionStorage.setItem("search", searchString);
+    }
   }, [searchString]);
 
   return (
