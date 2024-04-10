@@ -58,13 +58,13 @@ const UserSearchPage = () => {
       const observer = new IntersectionObserver(handleObserver, options);
       observer.observe(userSearchLoadRef.current);
     }
-  }, [userSearchLoadRef.current]);
+  }, [handleObserver]);
 
   useEffect(() => {
     if (page > 1 && searchString) {
       getUsersAction(searchString, page);
     }
-  }, [page]);
+  }, [page, searchString]);
 
   useEffect(() => {
     if (searchString) {

@@ -26,11 +26,11 @@ export const ReposTable = ({ user }: { user: UserItem }) => {
         getReposAction(page);
       }
     })();
-  }, [user]);
+  }, [user, getReposAction, page]);
 
   useEffect(() => {
     setFiltered(repositories);
-  }, [repositories]);
+  }, [repositories, getReposAction, page]);
 
   const handleObserver = (entities: any) => {
     const target = entities[0];
@@ -74,7 +74,7 @@ export const ReposTable = ({ user }: { user: UserItem }) => {
         )
       );
     }
-  }, [searchString]);
+  }, [searchString, repositories]);
 
   return (
     <>
@@ -121,8 +121,14 @@ const RepoRow = (props: RepoRowProps) => {
       </td>
 
       <td className="repo-row_repo-info">
-        <span>Stars {repo.stargazers_count}</span>
-        Forks {repo.forks_count}
+        <span>
+          <strong>Stars &#11088; :</strong>
+          {repo.stargazers_count}
+        </span>
+        <span>
+          <strong>Forks &#10542; :</strong>
+          {repo.forks_count}
+        </span>
       </td>
     </tr>
   );
