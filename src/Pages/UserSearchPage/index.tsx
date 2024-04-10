@@ -1,9 +1,10 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import MainLayout from "../../layout/MainLayout";
 import { SearchBar, UsersTable } from "../../components";
 import { UserItem } from "../../types";
+import { githubClient } from "../../api/api";
+import { SESSION_STORAGE_SEARCH } from "../../utils/constants";
 import "./_styles.scss";
 
 const UserSearchPage = () => {
@@ -20,17 +21,14 @@ const UserSearchPage = () => {
     page: number,
     isNewSearch = false
   ) => {
-    const response = await axios.get(
-      `https://api.github.com/search/users?q=${searchString}&page=${page}`
+    const response = await githubClient().get(
+      `/search/users?q=${searchString}&page=${page}`
     );
-
-    if (response.data) {
-      setTotalUsers(response.data.total_count);
-      if (isNewSearch) {
-        setUsers(response.data.items);
-      } else {
-        setUsers((prev) => [...prev, ...response.data.items]);
-      }
+    setTotalUsers(response.data.total_count);
+    if (isNewSearch) {
+      setUsers(response.data.items);
+    } else {
+      setUsers((prev) => [...prev, ...response.data.items]);
     }
   };
 
@@ -47,7 +45,7 @@ const UserSearchPage = () => {
   };
 
   useEffect(() => {
-    setSearchString(sessionStorage.getItem("search"));
+    setSearchString(sessionStorage.getItem(SESSION_STORAGE_SEARCH));
   }, []);
 
   useEffect(() => {
@@ -60,14 +58,12 @@ const UserSearchPage = () => {
       const observer = new IntersectionObserver(handleObserver, options);
       observer.observe(userSearchLoadRef.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSearchLoadRef.current]);
 
   useEffect(() => {
     if (page > 1 && searchString) {
       getUsersAction(searchString, page);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
@@ -79,7 +75,7 @@ const UserSearchPage = () => {
       setTotalUsers(0);
     }
     if (searchString !== null) {
-      sessionStorage.setItem("search", searchString || "");
+      sessionStorage.setItem(SESSION_STORAGE_SEARCH, searchString || "");
     }
   }, [searchString]);
 

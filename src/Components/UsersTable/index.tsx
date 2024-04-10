@@ -1,8 +1,8 @@
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./_styles.scss";
 import { UserItem } from "../../types";
 import { Ref } from "react";
+import "./_styles.scss";
 
 type UsersTableProps = {
   users: UserItem[];
@@ -48,9 +48,7 @@ const UserRow = ({ user }: { user: UserItem }) => (
       <img src={user?.avatar_url} alt="avatar" />
     </td>
     <td>
-      <Link
-        to={(location) => ({ ...location, pathname: `/user/${user?.login}` })}
-      >
+      <Link to={`/user/${user?.login}`}>
         <p>{user?.login}</p>
       </Link>
     </td>

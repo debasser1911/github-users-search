@@ -26,7 +26,6 @@ export const ReposTable = ({ user }: { user: UserItem }) => {
         getReposAction(page);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
@@ -75,7 +74,6 @@ export const ReposTable = ({ user }: { user: UserItem }) => {
         )
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchString]);
 
   return (

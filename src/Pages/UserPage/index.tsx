@@ -1,24 +1,21 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import "./_styles.scss";
 import MainLayout from "../../layout/MainLayout";
 import { UserItem } from "../../types";
 import { ReposTable } from "../../components";
+import { getUserData } from "../../api/api";
+import "./_styles.scss";
 
 const UserPage = () => {
   const [user, setUser] = useState<UserItem | undefined>(undefined);
   const searchedUser = useParams<{ userLogin: string }>();
 
   useEffect(() => {
-    if (searchedUser) {
-      axios
-        .get(`https://api.github.com/users/${searchedUser.userLogin}`)
-        .then((res) => {
-          setUser(res.data);
-        });
-    }
+    (async () => {
+      const userData = await getUserData(searchedUser?.userLogin!);
+      setUser(userData);
+    })();
   }, [searchedUser]);
 
   return (
@@ -47,8 +44,7 @@ const UserPage = () => {
                   Location <strong>{user.location}</strong>
                 </span>
                 <span>
-                  User created{" "}
-                  {/* <strong>{new Date().toUTCString(user.created_at)}</strong> */}
+                  User created <strong>{user.created_at}</strong>
                 </span>
                 <span>
                   Bio <strong>{user.bio}</strong>
