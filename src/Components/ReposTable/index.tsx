@@ -1,17 +1,18 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Table } from "react-bootstrap";
-import SearchBar from "../SearchBar";
+import { SearchBar } from "../SearchBar";
+import { RepoItem, UserItem } from "../../types";
 import "./_styles.scss";
 
-const ReposTable = ({ user = null }) => {
-  const [repositories, setRepositories] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+export const ReposTable = ({ user }: { user: UserItem }) => {
+  const [repositories, setRepositories] = useState<RepoItem[]>([]);
+  const [filtered, setFiltered] = useState<RepoItem[]>([]);
   const [searchString, setSearchString] = useState("");
   const [page, setPage] = useState(1);
   const loaderRef = useRef(null);
 
-  const getReposAction = async (page) => {
+  const getReposAction = async (page: number) => {
     const response = await axios.get(`${user.repos_url}?page=${page}`);
 
     if (response.data) {
@@ -32,7 +33,7 @@ const ReposTable = ({ user = null }) => {
     setFiltered(repositories);
   }, [repositories]);
 
-  const handleObserver = (entities) => {
+  const handleObserver = (entities: any) => {
     const target = entities[0];
     if (target.isIntersecting) {
       if (filtered.length < user.public_repos) {
@@ -106,19 +107,25 @@ const ReposTable = ({ user = null }) => {
   );
 };
 
-const RepoRow = ({ repo = {} }) => (
-  <tr className="repo-row">
-    <td>
-      <a href={repo.html_url} target="_blank" rel="noreferrer">
-        {repo.name}
-      </a>
-    </td>
+type RepoRowProps = {
+  repo: RepoItem;
+};
 
-    <td className="repo-row_repo-info">
-      <span>Stars {repo.stargazers_count}</span>
-      Forks {repo.forks_count}
-    </td>
-  </tr>
-);
+const RepoRow = (props: RepoRowProps) => {
+  const { repo } = props;
 
-export default ReposTable;
+  return (
+    <tr className="repo-row">
+      <td>
+        <a href={repo.html_url} target="_blank" rel="noreferrer">
+          {repo.name}
+        </a>
+      </td>
+
+      <td className="repo-row_repo-info">
+        <span>Stars {repo.stargazers_count}</span>
+        Forks {repo.forks_count}
+      </td>
+    </tr>
+  );
+};

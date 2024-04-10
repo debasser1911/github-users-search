@@ -1,19 +1,25 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
-import SearchBar from "../../Components/SearchBar";
-import UsersTable from "../../Components/UsersTable";
-import MainLayout from "../../Layout/MainLayout";
+import MainLayout from "../../layout/MainLayout";
+import { SearchBar, UsersTable } from "../../components";
+import { UserItem } from "../../types";
 import "./_styles.scss";
 
 const UserSearchPage = () => {
-  const [users, setUsers] = useState([]);
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [searchString, setSearchString] = useState("");
-  const [page, setPage] = useState(1);
-  const userSearchLoadRef = useRef(null);
+  const [users, setUsers] = useState<UserItem[]>([]);
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [searchString, setSearchString] = useState<string | null | undefined>(
+    ""
+  );
+  const [page, setPage] = useState<number>(1);
+  const userSearchLoadRef = useRef<HTMLDivElement>(null);
 
-  const getUsersAction = async (searchString, page, isNewSearch = false) => {
+  const getUsersAction = async (
+    searchString: string,
+    page: number,
+    isNewSearch = false
+  ) => {
     const response = await axios.get(
       `https://api.github.com/search/users?q=${searchString}&page=${page}`
     );
@@ -28,7 +34,7 @@ const UserSearchPage = () => {
     }
   };
 
-  const handleObserver = (entities) => {
+  const handleObserver = (entities: any) => {
     const target = entities[0];
     if (target.isIntersecting) {
       if (users.length < totalUsers) {
@@ -58,7 +64,7 @@ const UserSearchPage = () => {
   }, [userSearchLoadRef.current]);
 
   useEffect(() => {
-    if (page > 1) {
+    if (page > 1 && searchString) {
       getUsersAction(searchString, page);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,7 +79,7 @@ const UserSearchPage = () => {
       setTotalUsers(0);
     }
     if (searchString !== null) {
-      sessionStorage.setItem("search", searchString);
+      sessionStorage.setItem("search", searchString || "");
     }
   }, [searchString]);
 
@@ -83,7 +89,7 @@ const UserSearchPage = () => {
         <h2>User search page</h2>
         <h3>Users ({totalUsers})</h3>
         <SearchBar
-          searchString={searchString}
+          searchString={searchString || ""}
           setSearchString={setSearchString}
         />
         <UsersTable

@@ -1,6 +1,7 @@
-import Header from "../Components/Header";
+import { ReactNode } from "react";
+import { Header } from "../components/";
 
-const MainLayout = ({ children = {} }) => {
+const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Header />

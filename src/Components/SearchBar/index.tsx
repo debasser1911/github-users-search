@@ -1,6 +1,14 @@
 import "./_styles.scss";
 
-const SearchBar = ({ setSearchString, searchString = "" }) => {
+type SearchBarProps = {
+  setSearchString: (_: string) => void;
+  searchString: string;
+};
+
+export const SearchBar = ({
+  setSearchString,
+  searchString,
+}: SearchBarProps) => {
   return (
     <div className="user-search-bar d-flex flex-column justify-content-center">
       <input
@@ -12,4 +20,3 @@ const SearchBar = ({ setSearchString, searchString = "" }) => {
     </div>
   );
 };
-export default SearchBar;

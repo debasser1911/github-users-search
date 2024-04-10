@@ -1,8 +1,20 @@
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./_styles.scss";
+import { UserItem } from "../../types";
+import { Ref } from "react";
 
-const UsersTable = ({ users = [], loaderRef, totalUsers }) => {
+type UsersTableProps = {
+  users: UserItem[];
+  loaderRef: Ref<HTMLDivElement>;
+  totalUsers: number;
+};
+
+export const UsersTable = ({
+  users,
+  loaderRef,
+  totalUsers,
+}: UsersTableProps) => {
   return (
     <>
       <div className="users-table">
@@ -30,7 +42,7 @@ const UsersTable = ({ users = [], loaderRef, totalUsers }) => {
   );
 };
 
-const UserRow = ({ user = {} }) => (
+const UserRow = ({ user }: { user: UserItem }) => (
   <tr className="user-block">
     <td>
       <img src={user?.avatar_url} alt="avatar" />
@@ -49,5 +61,3 @@ const UserRow = ({ user = {} }) => (
     </td>
   </tr>
 );
-
-export default UsersTable;

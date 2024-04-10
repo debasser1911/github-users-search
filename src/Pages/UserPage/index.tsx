@@ -2,13 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import ReposTable from "../../Components/ReposTable";
-import MainLayout from "../../Layout/MainLayout";
 import "./_styles.scss";
+import MainLayout from "../../layout/MainLayout";
+import { UserItem } from "../../types";
+import { ReposTable } from "../../components";
 
 const UserPage = () => {
-  const [user, setUser] = useState(null);
-  const searchedUser = useParams();
+  const [user, setUser] = useState<UserItem | undefined>(undefined);
+  const searchedUser = useParams<{ userLogin: string }>();
 
   useEffect(() => {
     if (searchedUser) {
@@ -47,7 +48,7 @@ const UserPage = () => {
                 </span>
                 <span>
                   User created{" "}
-                  <strong>{new Date().toUTCString(user.created_at)}</strong>
+                  {/* <strong>{new Date().toUTCString(user.created_at)}</strong> */}
                 </span>
                 <span>
                   Bio <strong>{user.bio}</strong>

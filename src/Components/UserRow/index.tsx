@@ -1,6 +1,17 @@
+import { UserItem } from "../../types";
 import "./_styles.scss";
 
-const UserRow = ({ user = {}, setSelectedUser, setUserModalOpen }) => (
+type UserRowProps = {
+  user: UserItem;
+  setSelectedUser: (user: UserItem) => void;
+  setUserModalOpen: (_: boolean) => void;
+};
+
+export const UserRow = ({
+  user,
+  setSelectedUser,
+  setUserModalOpen,
+}: UserRowProps) => (
   <tr
     className="user-block"
     onClick={() => {
@@ -19,5 +30,3 @@ const UserRow = ({ user = {}, setSelectedUser, setUserModalOpen }) => (
     </td>
   </tr>
 );
-
-export default UserRow;

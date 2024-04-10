@@ -2,7 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useRedirect } from "../../utils/hooks";
 import "./_styles.scss";
 
-const Header = () => {
+export const Header = () => {
   let redirect = useRedirect();
   return (
     <header>
@@ -16,4 +16,3 @@ const Header = () => {
     </header>
   );
 };
-export default Header;
